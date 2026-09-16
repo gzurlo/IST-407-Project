@@ -1,0 +1,55 @@
+# IST 407 — course environment
+#
+# After the FIRST successful container build, freeze this:
+#     pip freeze > requirements.lock.txt
+# and switch the Dockerfile to install the lock file. Forty students on
+# unpinned installs will drift apart over a semester and notebooks will break.
+
+# --- Core scientific stack (weeks 1-3 onward) ---
+# pandas is PINNED BELOW 3.0 for Fall 2026. pandas 3.0 makes PyArrow-backed strings
+# the default, so string columns report dtype `str` where every teaching notebook's
+# saved output says `object`. In a course whose first three weeks ARE pandas
+# instruction, students' screens would disagree with the materials on day one.
+# It also removed fillna(method=), used in lectures 02 and 03.
+# Revisit over winter break, not five days before class.
+numpy>=1.26,<3
+pandas>=2.2,<3
+scipy>=1.11,<2
+matplotlib>=3.8,<4
+seaborn>=0.13,<1
+
+# --- Machine learning (week 5 onward) ---
+scikit-learn>=1.5,<2
+
+# --- Notebook tooling ---
+jupyter
+# ipykernel is PINNED BELOW 7.0 for Fall 2026. ipykernel 7.x (a major async rewrite)
+# deadlocks the VS Code Jupyter extension's kernel-startup handshake when a 2nd/3rd
+# notebook kernel is started: the kernel itself comes up healthy (it answers a
+# kernel_info request from a plain jupyter_client) but VS Code never registers it as
+# "successfully started", so the cell spins on "Connecting to kernel" forever.
+# Root-caused 2026-08-21 after a long hunt that wrongly blamed Pylance. 6.29.5 is the
+# last 6.x and the series VS Code has years of stability against. Revisit once the
+# Jupyter extension officially supports ipykernel 7.x.
+ipykernel>=6.29,<7
+
+# --- Later-week extras ---
+xgboost>=2.0          # week 10 lab (decision trees)
+umap-learn>=0.5       # weeks 12-13 (dimensionality reduction, clustering)
+imbalanced-learn>=0.12  # week 7 (imbalanced classes)
+
+# --- Utilities ---
+requests
+
+# --- DELIBERATELY OMITTED ---
+# fancyimpute : REMOVED, and the notebook that used it has been rewritten (2026-08-20).
+#               It dragged in cvxpy/cvxopt/ecos/scs/osqp and is a frequent install
+#               failure, especially on Apple Silicon. The replacement is
+#               sklearn's IterativeImputer with a classifier estimator, which is
+#               strictly better here: it predicts real categories instead of
+#               averaging category codes. No action outstanding.
+# hdbscan     : used in lectures/14-density-based-clustering and weekly/13's assignment.
+#               Requires C compilation. sklearn.cluster.HDBSCAN has shipped since
+#               scikit-learn 1.3. ACTION NEEDED before week 14 — swap to sklearn's.
+#
+# Neither is needed before October, so neither is allowed to jeopardise the day-one build.

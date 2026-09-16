@@ -1,0 +1,17 @@
+# Python / Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# OS
+.DS_Store
+
+# Large data — keep small (<100 MB) sets in data/, but never commit these.
+# For the final report, LINK to your data rather than committing it.
+*.zip
+*.parquet
+*.h5
+*.feather
+# (CSV is allowed in data/ if small; add specific big files here if needed.)

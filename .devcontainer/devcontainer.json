@@ -1,0 +1,58 @@
+{
+  "name": "IST 407 — Group Project",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "forwardPorts": [
+    8888
+  ],
+  "portsAttributes": {
+    "8888": {
+      "label": "Jupyter"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "notebook.output.textLineLimit": 60,
+        "python.analysis.exclude": [
+          "**/.venv/**",
+          "**/venv/**",
+          "**/.git/**",
+          "**/node_modules/**",
+          "**/__pycache__/**"
+        ],
+        "files.watcherExclude": {
+          "**/.venv/**": true,
+          "**/venv/**": true,
+          "**/.git/objects/**": true,
+          "**/.git/subtree-cache/**": true,
+          "**/node_modules/**": true,
+          "**/__pycache__/**": true,
+          "**/.ipynb_checkpoints/**": true
+        },
+        "search.exclude": {
+          "**/.venv": true,
+          "**/venv": true,
+          "**/__pycache__": true
+        },
+        "python.terminal.activateEnvironment": false,
+        "python.condaPath": "",
+        "python.useEnvironmentsExtension": false
+      },
+      "_comment_environment": "This devcontainer is intentionally byte-identical to the individual student-template one (same Dockerfile, same requirements.txt, same VS Code settings) so a student's group environment matches their own. See student-template/.devcontainer/devcontainer.json for the reasoning behind useEnvironmentsExtension=false and the ipykernel<7 pin (the second-notebook stall)."
+    }
+  },
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "8gb"
+  },
+  "remoteUser": "vscode",
+  "postCreateCommand": "git config --global --add safe.directory \"$PWD\" 2>/dev/null || true; python -c \"import sklearn; print('IST407 group environment OK - sklearn', sklearn.__version__)\""
+}
